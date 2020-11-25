@@ -23,7 +23,7 @@ class PageTwo(tk.Frame):
         tk.Button(self, text="9",
                   command=lambda: controller.show_frame("PageOne")).place(x=620, y=50)
         tk.Button(self, text="11",
-                  command=lambda: controller.show_frame("PageOne")).place(x=720, y=550)
+                  command=lambda: controller.show_frame("PageEleven")).place(x=720, y=550)
 
 
 
