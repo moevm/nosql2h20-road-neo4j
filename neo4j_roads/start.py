@@ -16,6 +16,7 @@ class SampleApp(tk.Tk):
         # on top of each other, then the one we want visible
         # will be raised above the others
         container = tk.Frame(self)
+        container.place(x=0,y=0)
         container.pack(side="top", fill="both", expand=True)
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
@@ -44,15 +45,15 @@ class PageOne(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
-        label = tk.Label(self, text="Планирование дорожных работ", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=100)
+        label = tk.Label(self, text="Планирование дорожных работ", font=controller.title_font).place(x=270,y=100)
+        #label.pack(side="top", fill="x", pady=100)
 
         button1 = tk.Button(self, text="Войти как гость",
-                            command=lambda: controller.show_frame("PageTwo"))
+                            command=lambda: controller.show_frame("PageTwo")).place(x=350,y=250)
         button2 = tk.Button(self, text="Войти как администратор",
-                            command=lambda: controller.show_frame("PageThree"))
-        button1.pack()
-        button2.pack()
+                            command=lambda: controller.show_frame("PageThree")).place(x=320,y=350)
+        #button1.pack()
+        #button2.pack()
 
 
 class PageTwo(tk.Frame):
@@ -61,7 +62,7 @@ class PageTwo(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
         label = tk.Label(self, text="This is page 1", font=controller.title_font)
-        label.pack(side="top", fill="x", pady=10)
+        label.pack(side="left", fill="x", pady=10)
         button = tk.Button(self, text="Go to the start page",
                            command=lambda: controller.show_frame("PageOne"))
         button.pack()
