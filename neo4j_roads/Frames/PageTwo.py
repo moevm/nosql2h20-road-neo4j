@@ -14,18 +14,20 @@ class PageTwo(tk.Frame):
         tk.Label(self, text="Меню", font=controller.title_font).place(x=70,y=50)
         tk.Label(self, text="Выберите город", font=controller.title_font).place(x=20, y=150)
 
+        def onListsButtonsClick(index):
+            controller.show_frame("PageFive")
+            print(index)
+
         tk.Button(self, text="Назад",
                   command=lambda: controller.show_frame("PageOne")).place(x=20, y=50)
         tk.Button(self, text="5",
-                  command=lambda: controller.show_frame("PageOne")).place(x=720, y=50)
+                  command=lambda: onListsButtonsClick(5)).place(x=620, y=50)
         tk.Button(self, text="7",
-                  command=lambda: controller.show_frame("PageOne")).place(x=670, y=50)
+                  command=lambda: onListsButtonsClick(7)).place(x=670, y=50)
         tk.Button(self, text="9",
-                  command=lambda: controller.show_frame("PageOne")).place(x=620, y=50)
+                  command=lambda: onListsButtonsClick(9)).place(x=720, y=50)
         tk.Button(self, text="11",
                   command=lambda: controller.show_frame("PageEleven")).place(x=720, y=550)
-
-
 
         frameList = tk.Frame(self)
         frameList.place(x=0,y=0)
@@ -46,7 +48,7 @@ class PageTwo(tk.Frame):
         mylist.bind('<<ListboxSelect>>',onSelectCity)
 
         for line in range(100):
-            mylist.insert(tk.END, "This is line number " + str(line))
+            mylist.insert(tk.END, "PageTwoThis is line number " + str(line))
 
         mylist.pack(side="left", fill="both",expand = 1)
         scrollbar.config(command=mylist.yview)

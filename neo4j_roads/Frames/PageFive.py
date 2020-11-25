@@ -5,7 +5,7 @@ except ImportError:
     import Tkinter as tk     # python 2
     import tkFont as tkfont  # python 2
 
-class PageThree(tk.Frame):
+class PageFive(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
@@ -23,18 +23,18 @@ class PageThree(tk.Frame):
         scrollbar = tk.Scrollbar(frameList)
         scrollbar.pack(side="right", fill="y")
 
-        def onSelectCity(evt):
+        def onSelectItem(evt):
             w = evt.widget
             index = int(w.curselection()[0])
             value = w.get(index)
-            controller.show_frame("PageFour")
+            controller.show_frame("PageThree")
             print('You selected item %d: "%s"' % (index, value))
 
         mylist = tk.Listbox(frameList, yscrollcommand=scrollbar.set)
-        mylist.bind('<<ListboxSelect>>', onSelectCity)
+        mylist.bind('<<ListboxSelect>>', onSelectItem)
 
         for line in range(100):
-            mylist.insert(tk.END, "PageThreeThis is line number " + str(line))
+            mylist.insert(tk.END, "PageFiveThis is line number " + str(line))
 
         mylist.pack(side="left", fill="both", expand=1)
         scrollbar.config(command=mylist.yview)
