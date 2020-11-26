@@ -21,6 +21,18 @@ class Neo4jConnection:
         with self.driver.session() as session:
             return session.read_transaction(self.get_works_from_city_bd,city)
 
+    def get_work_details(self,id_work):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_work_details_bd,id_work)
+
+    @staticmethod
+    def get_work_details_bd(tx,id_work):
+        nodes = tx.run("MATCH (n:Work) WHERE ID(n) = $id RETURN n", id=id_work)
+        works = []
+        for node in nodes:
+            works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address') + "|" + node['n'].get('date')+ "|" + node['n'].get('type'))
+        return works[0]
+
     @staticmethod
     def get_cities_bd(tx):
         nodes = tx.run("MATCH (n:City) RETURN n")
@@ -34,7 +46,7 @@ class Neo4jConnection:
         nodes = tx.run("MATCH (:City { title: $city })-->(n) RETURN n", city=city)
         works = []
         for node in nodes:
-            works.append(node['n'].get('title'))
+            works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address'))
         return works
 
 

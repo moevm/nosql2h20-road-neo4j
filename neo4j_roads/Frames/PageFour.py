@@ -1,3 +1,4 @@
+from main import example
 try:
     import tkinter as tk                # python 3
     from tkinter import font as tkfont  # python 3
@@ -14,12 +15,20 @@ class PageFour(tk.Frame):
         tk.Button(self, text="Назад",
                   command=lambda: controller.show_frame("PageThree")).place(x=20, y=50)
 
-        self.titleLabel = tk.Label(self, text="Название:", font=controller.title_font,justify = "left")
-        self.addressLabel = tk.Label(self, text="Адрес:", font=controller.title_font)
-        self.dateLabel = tk.Label(self, text="Дата:", font=controller.title_font)
-        self.typeLabel = tk.Label(self, text="Вид:", font=controller.title_font)
+        self.titleLabel = tk.Label(self, text="Название:", font=controller.title_font,wraplength = 450,justify = "left")
+        self.addressLabel = tk.Label(self, text="Адрес:", font=controller.title_font,wraplength = 450,justify="left")
+        self.dateLabel = tk.Label(self, text="Дата:", font=controller.title_font,wraplength = 450,justify="left")
+        self.typeLabel = tk.Label(self, text="Вид:", font=controller.title_font,wraplength = 450,justify="left")
 
-        self.titleLabel.place(x=400,y=250)
-        self.addressLabel.place(x=400, y=300)
-        self.dateLabel.place(x=400, y=350)
-        self.typeLabel.place(x=400, y=400)
+
+        self.titleLabel.place(x=300,y=250)
+        self.addressLabel.place(x=300, y=300)
+        self.dateLabel.place(x=300, y=350)
+        self.typeLabel.place(x=300, y=400)
+
+    def show_details(self,id):
+        details = example.get_work_details(id).split("|")
+        self.titleLabel['text'] = details[1]
+        self.addressLabel['text'] = details[2]
+        self.dateLabel['text'] = details[3]
+        self.typeLabel['text'] = details[4]

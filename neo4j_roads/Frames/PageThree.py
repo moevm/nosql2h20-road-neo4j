@@ -30,22 +30,25 @@ class PageThree(tk.Frame):
         def onSelectCity(evt):
             w = evt.widget
             index = int(w.curselection()[0])
-            value = w.get(index)
+            value = str(w.get(index))
+            id_work = int(value.split(' ',2)[1])
+            controller.frames['PageFour'].show_details(id_work)
             controller.show_frame("PageFour")
             print('You selected item %d: "%s"' % (index, value))
 
         self.mylist = tk.Listbox(frameList, yscrollcommand=scrollbar.set)
         self.mylist.bind('<<ListboxSelect>>', onSelectCity)
-        for line in example.get_works_from_city(self.titleFrameLabel['text']):
-            self.mylist.insert(tk.END,  str(line))
+        #for line in example.get_works_from_city(self.titleFrameLabel['text']):
+            #self.mylist.insert(tk.END,  str(line))
 
         self.mylist.pack(side="left", fill="both", expand=1)
         scrollbar.config(command=self.mylist.yview)
 
     def change_list_of_works_by_city(self):
         self.mylist.delete(0,tk.END)
-        for line in example.get_works_from_city(self.titleFrameLabel['text']):
-            self.mylist.insert(tk.END, str(line))
+        self.worksList = example.get_works_from_city(self.titleFrameLabel['text'])
+        for line in self.worksList:
+            self.mylist.insert(tk.END, "ИД: "+str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" + str(line).split('|')[2])
 
 
 
