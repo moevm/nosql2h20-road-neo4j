@@ -13,6 +13,31 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
+    def get_cities(self):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_cities_bd)
+
+    def get_works_from_city(self,city):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_works_from_city_bd,city)
+
+    @staticmethod
+    def get_cities_bd(tx):
+        nodes = tx.run("MATCH (n:City) RETURN n")
+        cities = []
+        for node in nodes:
+            cities.append(node['n'].get('title'))
+        return cities
+
+    @staticmethod
+    def get_works_from_city_bd(tx,city):
+        nodes = tx.run("MATCH (:City { title: $city })-->(n) RETURN n", city=city)
+        works = []
+        for node in nodes:
+            works.append(node['n'].get('title'))
+        return works
+
+
     @staticmethod
     def create_node(tx, message):
         result = tx.run("CREATE (a:Greeting) "
@@ -22,5 +47,5 @@ class Neo4jConnection:
         return result.single()[0]
 
 example = Neo4jConnection("bolt://localhost:7687", "debrone", "12345")
-example.get_message("Hello,world!")
-example.close()
+example.get_cities()
+#example.close()

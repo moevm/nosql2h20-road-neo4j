@@ -1,3 +1,4 @@
+from main import example
 try:
     import tkinter as tk                # python 3
     from tkinter import font as tkfont  # python 3
@@ -40,15 +41,21 @@ class PageTwo(tk.Frame):
             w = evt.widget
             index = int(w.curselection()[0])
             value = w.get(index)
-            controller.show_frame("PageThree")
             controller.frames["PageThree"].titleFrameLabel['text'] = value
+            controller.frames["PageThree"].change_list_of_works_by_city()
+            controller.show_frame("PageThree")
             print('You selected item %d: "%s"' % (index, value))
 
-        mylist = tk.Listbox(frameList, yscrollcommand=scrollbar.set)
-        mylist.bind('<<ListboxSelect>>',onSelectCity)
+        self.mylist = tk.Listbox(frameList, yscrollcommand=scrollbar.set)
+        self.mylist.bind('<<ListboxSelect>>',onSelectCity)
 
-        for line in range(100):
-            mylist.insert(tk.END, "PageTwoThis is line number " + str(line))
+        #for line in example.get_cities():
+            #self.mylist.insert(tk.END, str(line))
 
-        mylist.pack(side="left", fill="both",expand = 1)
-        scrollbar.config(command=mylist.yview)
+        self.mylist.pack(side="left", fill="both",expand = 1)
+        scrollbar.config(command=self.mylist.yview)
+
+    def change_list_of_cities(self):
+        self.mylist.delete(0,tk.END)
+        for line in example.get_cities():
+            self.mylist.insert(tk.END, str(line))
