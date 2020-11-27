@@ -22,6 +22,7 @@ class PageTwo(tk.Frame):
 
         def onFullListsButtonsClick(title):
             controller.frames["PageEleven"].update_filters()
+            controller.frames["PageEleven"].change_list("","","")
             controller.frames["PageEleven"].titleFrameLabel['text'] = title
             controller.show_frame("PageEleven")
 

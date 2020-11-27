@@ -18,20 +18,34 @@ class PageEleven(tk.Frame):
         tk.Button(self, text="Назад",
                   command=lambda: controller.show_frame("PageTwo")).place(x=20, y=50)
 
+        def callback(*args):
+            date = self.variable1.get() if self.variable1.get() != "Не выбрано" else ""
+            type = self.variable2.get() if self.variable2.get() != "Не выбрано" else ""
+            address = self.variable3.get() if self.variable3.get() != "Не выбрано" else ""
+            self.mylist.delete(0, tk.END)
+            for line in example.get_works_by_filter(date, type, address):
+                self.mylist.insert(tk.END,
+                                   "ИД: " + str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" +
+                                   str(line).split('|')[2])
+
+
         self.variable1 = tk.StringVar(self)
         self.variable1.set("one")  # default value
+        self.variable1.trace("w", callback)
         self.w1 = tk.OptionMenu(self, self.variable1, "one", "two", "three")
         self.w1.config(width=10,justify=tk.LEFT,wraplength=100)
         self.w1.place(x=400,y=100)
 
         self.variable2 = tk.StringVar(self)
         self.variable2.set("one")  # default value
+        self.variable2.trace("w", callback)
         self.w2 = tk.OptionMenu(self, self.variable2, "one", "two", "three")
         self.w2.config(width=10,justify=tk.LEFT,wraplength=100)
         self.w2.place(x=520, y=100)
 
         self.variable3 = tk.StringVar(self)
         self.variable3.set("one")  # default value
+        self.variable3.trace("w", callback)
         self.w3 = tk.OptionMenu(self, self.variable3, "one", "two", "three")
         self.w3.config(width=10,justify=tk.LEFT,wraplength=100)
         self.w3.place(x=640, y=100)
@@ -48,18 +62,26 @@ class PageEleven(tk.Frame):
         def onSelectWork(evt):
             w = evt.widget
             index = int(w.curselection()[0])
-            value = w.get(index)
+            value = str(w.get(index))
+            id_work = int(value.split(' ', 2)[1])
+            controller.frames['PageFour'].show_details(id_work)
+            controller.frames['PageFour'].index = 11
             controller.show_frame("PageFour")
             print('You selected item %d: "%s"' % (index, value))
 
-        mylist = tk.Listbox(frameList, yscrollcommand=scrollbar.set)
-        mylist.bind('<<ListboxSelect>>', onSelectWork)
+        self.mylist = tk.Listbox(frameList, yscrollcommand=scrollbar.set)
+        self.mylist.bind('<<ListboxSelect>>', onSelectWork)
 
-        for line in range(100):
-            mylist.insert(tk.END, "!This is line number " + str(line))
+        #for line in range(100):
+            #self.mylist.insert(tk.END, "!This is line number " + str(line))
 
-        mylist.pack(side="left", fill="both", expand=1)
-        scrollbar.config(command=mylist.yview)
+        self.mylist.pack(side="left", fill="both", expand=1)
+        scrollbar.config(command=self.mylist.yview)
+
+    def change_list(self,date,type,address):
+        self.mylist.delete(0,tk.END)
+        for line in example.get_works_by_filter(date,type,address):
+            self.mylist.insert(tk.END, "ИД: " + str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" + str(line).split('|')[2])
 
     def update_filters(self):
         str_none = "Не выбрано"

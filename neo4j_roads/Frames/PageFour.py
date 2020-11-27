@@ -11,9 +11,14 @@ class PageFour(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+        self.index = 0
+        def onBackButtonClick():
+            if self.index == 11:
+                controller.show_frame("PageEleven")
+            else: controller.show_frame("PageThree")
 
         tk.Button(self, text="Назад",
-                  command=lambda: controller.show_frame("PageThree")).place(x=20, y=50)
+                  command=lambda: onBackButtonClick()).place(x=20, y=50)
 
         self.titleLabel = tk.Label(self, text="Название:", font=controller.title_font,wraplength = 450,justify = "left")
         self.addressLabel = tk.Label(self, text="Адрес:", font=controller.title_font,wraplength = 450,justify="left")
