@@ -16,8 +16,7 @@ class PageThree(tk.Frame):
         def onBackButtonsClick(index):
             if self.index == 0:
                 controller.show_frame("PageTwo")
-            elif self.index == 5:
-                controller.show_frame("PageFive")
+            else: controller.show_frame("PageFive")
 
 
         self.titleFrameLabel = tk.Label(self, text="Gorod", font=controller.title_font)
@@ -54,15 +53,17 @@ class PageThree(tk.Frame):
     def change_list_of_works(self,index = 0):
         self.mylist.delete(0,tk.END)
         self.index = index
+        self.worksList = []
         if index == 0:
             self.worksList = example.get_works_from_city(self.titleFrameLabel['text'])
-            for line in self.worksList:
-                self.mylist.insert(tk.END, "ИД: "+str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" + str(line).split('|')[2])
         elif index == 5:
             self.worksList = example.get_works_by_date(self.titleFrameLabel['text'])
-            for line in self.worksList:
-                self.mylist.insert(tk.END,"ИД: " + str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" + str(line).split('|')[2])
-
+        elif index == 7:
+            self.worksList = example.get_works_by_type(self.titleFrameLabel['text'])
+        elif index == 9:
+            self.worksList = example.get_works_by_address(self.titleFrameLabel['text'])
+        for line in self.worksList:
+            self.mylist.insert(tk.END,"ИД: " + str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" + str(line).split('|')[2])
 
 
 

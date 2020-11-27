@@ -48,6 +48,12 @@ class PageFive(tk.Frame):
         if index == 5:
             for line in example.get_all_dates():
                 self.mylist.insert(tk.END,str(line))
+        elif index == 7:
+            for line in example.get_all_types():
+                self.mylist.insert(tk.END,str(line))
+        elif index == 9:
+            for line in example.get_all_addresses():
+                self.mylist.insert(tk.END,str(line))
 
 
 

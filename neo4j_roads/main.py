@@ -13,21 +13,53 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
-    def get_cities(self):
+    def get_works_by_address(self,address):
         with self.driver.session() as session:
-            return session.read_transaction(self.get_cities_bd)
+            return session.read_transaction(self.get_works_by_address_bd,address)
 
-    def get_works_from_city(self,city):
-        with self.driver.session() as session:
-            return session.read_transaction(self.get_works_from_city_bd,city)
+    @staticmethod
+    def get_works_by_address_bd(tx, address):
+        nodes = tx.run("MATCH (n:Work{address:$address}) RETURN n", address=address)
+        works = []
+        for node in nodes:
+            works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address'))
+        return works
 
-    def get_work_details(self,id_work):
+    def get_all_addresses(self):
         with self.driver.session() as session:
-            return session.read_transaction(self.get_work_details_bd,id_work)
+            return session.read_transaction(self.get_all_addresses_bd)
 
-    def get_all_dates(self):
+    @staticmethod
+    def get_all_addresses_bd(tx):
+        nodes = tx.run("MATCH (n:Work) RETURN DISTINCT n.address")
+        addresses = []
+        for node in nodes:
+            addresses.append(node['n.address'])
+        return addresses
+
+    def get_works_by_type(self,type):
         with self.driver.session() as session:
-            return session.read_transaction(self.get_all_dates_bd)
+            return session.read_transaction(self.get_works_by_type_bd,type)
+
+    @staticmethod
+    def get_works_by_type_bd(tx, type):
+        nodes = tx.run("MATCH (n:Work{type:$type}) RETURN n", type=type)
+        works = []
+        for node in nodes:
+            works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address'))
+        return works
+
+    def get_all_types(self):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_all_types_bd)
+
+    @staticmethod
+    def get_all_types_bd(tx):
+        nodes = tx.run("MATCH (n:Work) RETURN DISTINCT n.type")
+        types = []
+        for node in nodes:
+            types.append(node['n.type'])
+        return types
 
     def get_works_by_date(self,date):
         with self.driver.session() as session:
@@ -41,6 +73,10 @@ class Neo4jConnection:
             works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address'))
         return works
 
+    def get_all_dates(self):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_all_dates_bd)
+
     @staticmethod
     def get_all_dates_bd(tx):
         nodes = tx.run("MATCH (n:Work) RETURN DISTINCT n.date")
@@ -48,6 +84,10 @@ class Neo4jConnection:
         for node in nodes:
             dates.append(node['n.date'])
         return dates
+
+    def get_work_details(self,id_work):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_work_details_bd,id_work)
 
     @staticmethod
     def get_work_details_bd(tx,id_work):
@@ -57,6 +97,10 @@ class Neo4jConnection:
             works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address') + "|" + node['n'].get('date')+ "|" + node['n'].get('type'))
         return works[0]
 
+    def get_cities(self):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_cities_bd)
+
     @staticmethod
     def get_cities_bd(tx):
         nodes = tx.run("MATCH (n:City) RETURN n")
@@ -64,6 +108,10 @@ class Neo4jConnection:
         for node in nodes:
             cities.append(node['n'].get('title'))
         return cities
+
+    def get_works_from_city(self,city):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_works_from_city_bd,city)
 
     @staticmethod
     def get_works_from_city_bd(tx,city):
@@ -83,5 +131,5 @@ class Neo4jConnection:
         return result.single()[0]
 
 example = Neo4jConnection("bolt://localhost:7687", "debrone", "12345")
-example.get_cities()
+#example.get_cities()
 #example.close()

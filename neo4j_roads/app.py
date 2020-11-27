@@ -16,7 +16,7 @@ class SampleApp(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
 
-        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold")
+        self.title_font = tkfont.Font(family='Helvetica', size=17, weight="bold")
         self.title("Планирование дорожных работ")
         container = tk.Frame(self)
         container.place(x=0,y=0)

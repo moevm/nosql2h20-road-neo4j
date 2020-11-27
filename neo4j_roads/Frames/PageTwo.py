@@ -15,21 +15,26 @@ class PageTwo(tk.Frame):
         tk.Label(self, text="Меню", font=controller.title_font).place(x=70,y=50)
         tk.Label(self, text="Выберите город", font=controller.title_font).place(x=20, y=150)
 
-        def onListsButtonsClick(index):
+        def onListsButtonsClick(index,title):
             controller.frames["PageFive"].change_list(index)
-            controller.frames["PageFive"].titleFrameLabel['text'] = "Выбор по дате"
+            controller.frames["PageFive"].titleFrameLabel['text'] = title
             controller.show_frame("PageFive")
+
+        def onFullListsButtonsClick(title):
+            controller.frames["PageEleven"].update_filters()
+            controller.frames["PageEleven"].titleFrameLabel['text'] = title
+            controller.show_frame("PageEleven")
 
         tk.Button(self, text="Назад",
                   command=lambda: controller.show_frame("PageOne")).place(x=20, y=50)
         tk.Button(self, text="5",
-                  command=lambda: onListsButtonsClick(5)).place(x=620, y=50)
+                  command=lambda: onListsButtonsClick(5,"Выбор по дате")).place(x=620, y=50)
         tk.Button(self, text="7",
-                  command=lambda: onListsButtonsClick(7)).place(x=670, y=50)
+                  command=lambda: onListsButtonsClick(7,"Выбор по типу")).place(x=670, y=50)
         tk.Button(self, text="9",
-                  command=lambda: onListsButtonsClick(9)).place(x=720, y=50)
+                  command=lambda: onListsButtonsClick(9,"Выбор по адресу")).place(x=720, y=50)
         tk.Button(self, text="11",
-                  command=lambda: controller.show_frame("PageEleven")).place(x=720, y=550)
+                  command=lambda: onFullListsButtonsClick("Общий список")).place(x=720, y=550)
 
         frameList = tk.Frame(self)
         frameList.place(x=0,y=0)
