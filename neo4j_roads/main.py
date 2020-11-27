@@ -30,7 +30,7 @@ class Neo4jConnection:
             query += "type:$type"
             params['type'] = type
         if address != "":
-            if "type" in params:
+            if "type" in params or "date" in params:
                 query += ","
             query += "address:$address"
             params['address'] = address
