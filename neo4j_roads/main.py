@@ -25,6 +25,30 @@ class Neo4jConnection:
         with self.driver.session() as session:
             return session.read_transaction(self.get_work_details_bd,id_work)
 
+    def get_all_dates(self):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_all_dates_bd)
+
+    def get_works_by_date(self,date):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_works_by_date_bd,date)
+
+    @staticmethod
+    def get_works_by_date_bd(tx,date):
+        nodes = tx.run("MATCH (n:Work{date:$date}) RETURN n",date=date)
+        works = []
+        for node in nodes:
+            works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address'))
+        return works
+
+    @staticmethod
+    def get_all_dates_bd(tx):
+        nodes = tx.run("MATCH (n:Work) RETURN DISTINCT n.date")
+        dates = []
+        for node in nodes:
+            dates.append(node['n.date'])
+        return dates
+
     @staticmethod
     def get_work_details_bd(tx,id_work):
         nodes = tx.run("MATCH (n:Work) WHERE ID(n) = $id RETURN n", id=id_work)

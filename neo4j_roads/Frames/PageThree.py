@@ -44,11 +44,16 @@ class PageThree(tk.Frame):
         self.mylist.pack(side="left", fill="both", expand=1)
         scrollbar.config(command=self.mylist.yview)
 
-    def change_list_of_works_by_city(self):
+    def change_list_of_works(self,index = 0):
         self.mylist.delete(0,tk.END)
-        self.worksList = example.get_works_from_city(self.titleFrameLabel['text'])
-        for line in self.worksList:
-            self.mylist.insert(tk.END, "ИД: "+str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" + str(line).split('|')[2])
+        if index == 0:
+            self.worksList = example.get_works_from_city(self.titleFrameLabel['text'])
+            for line in self.worksList:
+                self.mylist.insert(tk.END, "ИД: "+str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" + str(line).split('|')[2])
+        elif index == 5:
+            self.worksList = example.get_works_by_date(self.titleFrameLabel['text'])
+            for line in self.worksList:
+                self.mylist.insert(tk.END,"ИД: " + str(line).split('|')[0] + " - " + str(line).split('|')[1] + " по адресу:" + str(line).split('|')[2])
 
 
 

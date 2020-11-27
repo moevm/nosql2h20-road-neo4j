@@ -16,8 +16,9 @@ class PageTwo(tk.Frame):
         tk.Label(self, text="Выберите город", font=controller.title_font).place(x=20, y=150)
 
         def onListsButtonsClick(index):
+            controller.frames["PageFive"].change_list(index)
+            controller.frames["PageFive"].titleFrameLabel['text'] = "Выбор по дате"
             controller.show_frame("PageFive")
-            print(index)
 
         tk.Button(self, text="Назад",
                   command=lambda: controller.show_frame("PageOne")).place(x=20, y=50)
@@ -42,7 +43,7 @@ class PageTwo(tk.Frame):
             index = int(w.curselection()[0])
             value = w.get(index)
             controller.frames["PageThree"].titleFrameLabel['text'] = value
-            controller.frames["PageThree"].change_list_of_works_by_city()
+            controller.frames["PageThree"].change_list_of_works()
             controller.show_frame("PageThree")
             print('You selected item %d: "%s"' % (index, value))
 
