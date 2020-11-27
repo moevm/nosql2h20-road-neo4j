@@ -62,6 +62,7 @@ class PageTwo(tk.Frame):
         scrollbar.config(command=self.mylist.yview)
 
     def change_list_of_cities(self):
+        #example.get_works_by_filter("12.12.2020","Содержание автомобильных дорог и дорожных сооружений","")
         self.mylist.delete(0,tk.END)
         for line in example.get_cities():
             self.mylist.insert(tk.END, str(line))

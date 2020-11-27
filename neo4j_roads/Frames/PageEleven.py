@@ -20,16 +20,21 @@ class PageEleven(tk.Frame):
 
         self.variable1 = tk.StringVar(self)
         self.variable1.set("one")  # default value
-        self.w1 = tk.OptionMenu(self, self.variable1, "one", "two", "three").place(x=500,y=100)
-        print(self.w1)
-        print("con")
+        self.w1 = tk.OptionMenu(self, self.variable1, "one", "two", "three")
+        self.w1.config(width=10,justify=tk.LEFT,wraplength=100)
+        self.w1.place(x=400,y=100)
+
         self.variable2 = tk.StringVar(self)
         self.variable2.set("one")  # default value
-        self.w2 = tk.OptionMenu(self, self.variable2, "one", "two", "three").place(x=600, y=100)
+        self.w2 = tk.OptionMenu(self, self.variable2, "one", "two", "three")
+        self.w2.config(width=10,justify=tk.LEFT,wraplength=100)
+        self.w2.place(x=520, y=100)
 
         self.variable3 = tk.StringVar(self)
         self.variable3.set("one")  # default value
-        self.w3 = tk.OptionMenu(self, self.variable3, "one", "two", "three").place(x=700, y=100)
+        self.w3 = tk.OptionMenu(self, self.variable3, "one", "two", "three")
+        self.w3.config(width=10,justify=tk.LEFT,wraplength=100)
+        self.w3.place(x=640, y=100)
 
         tk.Label(self, text="Фильтр",font=controller.title_font).place(x=620, y=50)
 
@@ -58,7 +63,27 @@ class PageEleven(tk.Frame):
 
     def update_filters(self):
         str_none = "Не выбрано"
-        optionList = [str_none] + example.get_all_dates()
-        self.variable1.set(optionList[0])
-        self.w1.destroy()
-        self.w1 = tk.OptionMenu(self, self.variable1, *optionList).place(x=620,y=100)
+
+        optionList1 = [str_none] + example.get_all_dates()
+        self.variable1.set(optionList1[0])
+        menu = self.w1["menu"]
+        menu.delete(0, "end")
+        for string in optionList1:
+            menu.add_command(label=string,
+                             command=lambda value=string: self.variable1.set(value))
+
+        optionList2 = [str_none] + example.get_all_types()
+        self.variable2.set(optionList2[0])
+        menu = self.w2["menu"]
+        menu.delete(0, "end")
+        for string in optionList2:
+            menu.add_command(label=string,
+                             command=lambda value=string: self.variable2.set(value))
+
+        optionList3 = [str_none] + example.get_all_addresses()
+        self.variable3.set(optionList3[0])
+        menu = self.w3["menu"]
+        menu.delete(0, "end")
+        for string in optionList3:
+            menu.add_command(label=string,
+                             command=lambda value=string: self.variable3.set(value))

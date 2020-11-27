@@ -13,6 +13,35 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
+    def get_works_by_filter(self,date,type,address):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_works_by_filter_bd,date,type,address)
+
+    @staticmethod
+    def get_works_by_filter_bd(tx, date, type, address):
+        params = {}
+        query = "MATCH (n:Work{"
+        if date != "":
+            query += "date:$date"
+            params['date'] = date
+        if type != "":
+            if "date" in params:
+                query += ","
+            query += "type:$type"
+            params['type'] = type
+        if address != "":
+            if "type" in params:
+                query += ","
+            query += "address:$address"
+            params['address'] = address
+        query += "}) RETURN n"
+        nodes = tx.run(query, parameters=params)
+        works = []
+        for node in nodes:
+            print(node)
+            works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address'))
+        return works
+
     def get_works_by_address(self,address):
         with self.driver.session() as session:
             return session.read_transaction(self.get_works_by_address_bd,address)
