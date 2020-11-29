@@ -14,7 +14,12 @@ class PageTwelve(tk.Frame):
         tk.Label(self, text="Вход в режим администратора", font=controller.title_font).place(x=270,y=100)
 
         tk.Label(self, text="Логин", font=controller.title_font).place(x=200,y=250)
-
         tk.Label(self, text="Пароль", font=controller.title_font).place(x=200,y=350)
-        tk.Entry().place(x=350, y=250)
-        tk.Entry().place(x=350, y=350)
+
+        tk.Entry(self).place(x=350, y=250)
+        tk.Entry(self).place(x=350, y=350)
+
+        tk.Button(self, text="Войти",
+                  command=lambda: controller.show_frame("PageThirten")).place(x=320, y=450)
+        tk.Button(self, text="Назад",
+                  command=lambda: controller.show_frame("PageOne")).place(x=20, y=50)
