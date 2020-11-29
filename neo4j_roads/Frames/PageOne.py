@@ -20,4 +20,4 @@ class PageOne(tk.Frame):
         button1 = tk.Button(self, text="Войти как гость",
                             command=lambda: onGuestClick()).place(x=350,y=250)
         button2 = tk.Button(self, text="Войти как администратор",
-                            command=lambda: controller.show_frame("PageThree")).place(x=320,y=350)
+                            command=lambda: controller.show_frame("PageTwelve")).place(x=320,y=350)

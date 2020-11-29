@@ -4,6 +4,7 @@ from Frames.PageThree import PageThree
 from Frames.PageFour import PageFour
 from Frames.PageEleven import PageEleven
 from Frames.PageFive import PageFive
+from Frames.PageTwelve import PageTwelve
 try:
     import tkinter as tk                # python 3
     from tkinter import font as tkfont  # python 3
@@ -25,7 +26,7 @@ class SampleApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (PageOne, PageTwo, PageThree, PageFour,PageFive, PageEleven):
+        for F in (PageOne, PageTwo, PageThree, PageFour,PageFive, PageEleven, PageTwelve):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame
