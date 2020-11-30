@@ -26,6 +26,7 @@ class PageFifteen(tk.Frame):
 
         def delete_work():
             example.delete_work_by_id(int(self.id_work))
+            tk.messagebox.showinfo("Инфо", "Удалено!")
 
         def back():
             controller.frames["PageEleven"].change_list("","","")

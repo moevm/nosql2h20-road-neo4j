@@ -13,6 +13,16 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
+    def create_work(self,title,address,date,type,city):
+        with self.driver.session() as session:
+            return session.write_transaction(self.create_work_bd,title,address,date,type,city)
+
+    @staticmethod
+    def create_work_bd(tx,title,address,date,type,city):
+        result = tx.run("CREATE (w:Work{title:$title, address:$address, date:$date,type:$type}) RETURN ID(w)",title = title,address = address,date=date,type=type)
+        id_work = result.single()[0]
+        tx.run("MATCH (w:Work), (c:City) WHERE ID(w)=$id AND c.title=$city CREATE (c)-[r:HAS]->(w)",id=id_work,city=city)
+
     def update_work_by_id(self,id_work,title,address,date,type):
         with self.driver.session() as session:
             return session.write_transaction(self.update_work_by_id_bd,id_work,title,address,date,type)
