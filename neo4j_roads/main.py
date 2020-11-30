@@ -221,6 +221,6 @@ class Neo4jConnection:
                         message=message)
         return result.single()[0]
 
-example = Neo4jConnection("bolt://localhost:7687", "debrone", "12345")
+example = Neo4jConnection("bolt://0.0.0.0:7687", "debrone", "12345")
 #example.get_cities()
 #example.close()
