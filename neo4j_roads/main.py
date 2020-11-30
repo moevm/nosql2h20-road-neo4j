@@ -13,6 +13,15 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
+    def get_count_works_by_month(self,month):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_count_works_by_month_bd,month)
+
+    @staticmethod
+    def get_count_works_by_month_bd(tx, month):
+        result = tx.run("MATCH (n:Work) where split(n.date,'.')[1] = $month return count(n)",month=month)
+        return result.single()[0]
+
     def get_count_works_by_city(self, city):
         with self.driver.session() as session:
             return session.read_transaction(self.get_count_works_by_city_bd, city)
