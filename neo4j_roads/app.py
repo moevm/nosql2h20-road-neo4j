@@ -9,6 +9,7 @@ from Frames.PageThirten import PageThirten
 from Frames.PageFifteen import PageFifteen
 from Frames.PageSixteen import PageSixteen
 from Frames.PageSeventeen import PageSeventeen
+from Frames.PageFouth import PageFouth
 try:
     import tkinter as tk                # python 3
     from tkinter import font as tkfont  # python 3
@@ -30,7 +31,7 @@ class SampleApp(tk.Tk):
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
-        for F in (PageOne, PageTwo, PageThree, PageFour,PageFive, PageEleven, PageTwelve, PageThirten, PageFifteen, PageSixteen, PageSeventeen):
+        for F in (PageOne, PageTwo, PageThree, PageFour,PageFive, PageEleven, PageTwelve, PageThirten, PageFifteen, PageSixteen, PageSeventeen, PageFouth):
             page_name = F.__name__
             frame = F(parent=container, controller=self)
             self.frames[page_name] = frame

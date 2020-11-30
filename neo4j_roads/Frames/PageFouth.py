@@ -1,0 +1,53 @@
+from main import example
+from pandas import DataFrame
+import matplotlib
+matplotlib.use("TkAgg")
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+try:
+    import tkinter as tk                # python 3
+    from tkinter import font as tkfont  # python 3
+except ImportError:
+    import Tkinter as tk     # python 2
+    import tkFont as tkfont  # python 2
+
+class PageFouth(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        self.frameTitleLabel = tk.Label(self, text="Статистика", font=controller.title_font, wraplength=450,
+                                        justify="left").place(x=100, y=50)
+        tk.Button(self, text="Назад",command=lambda: controller.show_frame("PageThirten")).place(x=20, y=50)
+
+
+
+    def draw_stat(self):
+        f = Figure(figsize=(2, 2), dpi=100)
+        a = f.add_subplot(111)
+        a.plot([1, 2, 3, 4, 5, 6, 7, 8], [5, 6, 1, 3, 8, 9, 3, 5])
+        canvas = FigureCanvasTkAgg(f, self)
+        canvas.draw()
+        canvas.get_tk_widget().place(x=0, y=100)
+
+        cityArray = example.get_cities()
+        worksPerCityArray = []
+
+        for x in cityArray:
+            worksPerCityArray.append(example.get_count_works_by_city(x))
+
+        data1 = {'Города': cityArray,
+                 'Кол-во_работ': worksPerCityArray
+                 }
+        df1 = DataFrame(data1, columns=['Города', 'Кол-во_работ'])
+        figure1 = Figure(figsize=(5, 5), dpi=100)
+        ax1 = figure1.add_subplot(111)
+        bar1 = FigureCanvasTkAgg(figure1, self)
+        bar1.get_tk_widget().place(x=300, y=0)
+        df1 = df1[['Города', 'Кол-во_работ']].groupby('Города').sum()
+        df1.plot(kind='bar', legend=True, ax=ax1)
+        ax1.set_title('Работы по городам')
+
+
+

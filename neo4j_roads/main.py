@@ -13,6 +13,15 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
+    def get_count_works_by_city(self, city):
+        with self.driver.session() as session:
+            return session.read_transaction(self.get_count_works_by_city_bd, city)
+
+    @staticmethod
+    def get_count_works_by_city_bd(tx, city):
+        result = tx.run("MATCH (n:City { title: $city })-[r:HAS]->(c) return count(r)", city=city)
+        return result.single()[0]
+
     def create_work(self,title,address,date,type,city):
         with self.driver.session() as session:
             return session.write_transaction(self.create_work_bd,title,address,date,type,city)

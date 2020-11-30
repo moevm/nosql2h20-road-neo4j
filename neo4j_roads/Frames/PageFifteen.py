@@ -12,7 +12,7 @@ class PageFifteen(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        self.frameTitleLabel = tk.Label(self, text="Название:", font=controller.title_font, wraplength=450, justify="left").place(x=100, y=50)
+        self.frameTitleLabel = tk.Label(self, text="Удаление", font=controller.title_font, wraplength=450, justify="left").place(x=100, y=50)
 
         self.titleLabel = tk.Label(self, text="Название:", font=controller.title_font, wraplength=450, justify="left")
         self.addressLabel = tk.Label(self, text="Адрес:", font=controller.title_font, wraplength=450, justify="left")

@@ -22,8 +22,12 @@ class PageThirten(tk.Frame):
             controller.frames["PageSixteen"].clear_details()
             controller.show_frame("PageSixteen")
 
+        def onStatButtonClick():
+            controller.frames["PageFouth"].draw_stat()
+            controller.show_frame("PageFouth")
+
         tk.Button(self, text="Редактировать дорожную работу",command=lambda: onFullListsButtonsClick("Общий список",17)).place(x=320, y=150)
         tk.Button(self, text="Добавить дорожную работу",command=lambda: onCreateButtonClick()).place(x=320, y=200)
         tk.Button(self, text="Удалить дорожную работу",command=lambda: onFullListsButtonsClick("Общий список",15)).place(x=320, y=250)
-        tk.Button(self, text="Статистика").place(x=320, y=300)
+        tk.Button(self, text="Статистика",command=lambda: onStatButtonClick()).place(x=320, y=300)
         tk.Button(self, text="Выйти",command=lambda: controller.show_frame("PageTwelve")).place(x=320, y=400)
