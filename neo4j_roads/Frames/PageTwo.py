@@ -29,13 +29,13 @@ class PageTwo(tk.Frame):
 
         tk.Button(self, text="Назад",
                   command=lambda: controller.show_frame("PageOne")).place(x=20, y=50)
-        tk.Button(self, text="5",
+        tk.Button(self, text="Выбор по дате",
                   command=lambda: onListsButtonsClick(5,"Выбор по дате")).place(x=620, y=50)
-        tk.Button(self, text="7",
+        tk.Button(self, text="Выбор по типу",
                   command=lambda: onListsButtonsClick(7,"Выбор по типу")).place(x=670, y=50)
-        tk.Button(self, text="9",
+        tk.Button(self, text="Выбор по адресу",
                   command=lambda: onListsButtonsClick(9,"Выбор по адресу")).place(x=720, y=50)
-        tk.Button(self, text="11",
+        tk.Button(self, text="Общий список",
                   command=lambda: onFullListsButtonsClick("Общий список")).place(x=720, y=550)
 
         frameList = tk.Frame(self)

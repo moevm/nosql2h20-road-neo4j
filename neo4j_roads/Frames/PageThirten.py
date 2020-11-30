@@ -1,3 +1,5 @@
+from main import example
+import tkinter.messagebox
 try:
     import tkinter as tk                # python 3
     from tkinter import font as tkfont  # python 3
@@ -26,6 +28,16 @@ class PageThirten(tk.Frame):
             controller.frames["PageFouth"].draw_stat()
             controller.show_frame("PageFouth")
 
+        def importButtonClick():
+            example.import_database()
+            tk.messagebox.showinfo("Инфо", "Импортировано!")
+
+        def exportButtonClick():
+            example.export_database()
+            tk.messagebox.showinfo("Инфо", "Экспортировано!")
+
+        tk.Button(self, text="Импорт",command=lambda: importButtonClick()).place(x=100, y=50)
+        tk.Button(self, text="Экспорт",command=lambda: exportButtonClick()).place(x=150, y=50)
         tk.Button(self, text="Редактировать дорожную работу",command=lambda: onFullListsButtonsClick("Общий список",17)).place(x=320, y=150)
         tk.Button(self, text="Добавить дорожную работу",command=lambda: onCreateButtonClick()).place(x=320, y=200)
         tk.Button(self, text="Удалить дорожную работу",command=lambda: onFullListsButtonsClick("Общий список",15)).place(x=320, y=250)

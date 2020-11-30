@@ -13,6 +13,22 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
+    def import_database(self):
+        with self.driver.session() as session:
+            return session.read_transaction(self.import_database_bd)
+
+    @staticmethod
+    def import_database_bd(tx):
+        tx.run("CALL apoc.load.csv('works.csv')")
+
+    def export_database(self):
+        with self.driver.session() as session:
+            return session.read_transaction(self.import_database_bd)
+
+    @staticmethod
+    def export_database_bd(tx):
+        tx.run("CALL apoc.export.csv.all('works.csv', {})")
+
     def get_count_works_by_month(self,month):
         with self.driver.session() as session:
             return session.read_transaction(self.get_count_works_by_month_bd,month)
