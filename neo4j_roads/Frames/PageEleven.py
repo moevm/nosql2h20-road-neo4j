@@ -16,7 +16,7 @@ class PageEleven(tk.Frame):
         def back():
             if self.index == 0:
                 controller.show_frame("PageTwo")
-            elif self.index == 15: controller.show_frame("PageThirten")
+            else: controller.show_frame("PageThirten")
 
         self.titleFrameLabel = tk.Label(self, text="Gorod", font=controller.title_font)
         self.titleFrameLabel.place(x=70, y=50)
@@ -78,6 +78,9 @@ class PageEleven(tk.Frame):
             elif self.index == 15:
                 controller.frames['PageFifteen'].show_details(id_work)
                 controller.show_frame('PageFifteen')
+            elif self.index == 17:
+                controller.frames['PageSeventeen'].show_details(id_work)
+                controller.show_frame('PageSeventeen')
             print('You selected item %d: "%s"' % (index, value))
 
         self.mylist = tk.Listbox(frameList, yscrollcommand=scrollbar.set)

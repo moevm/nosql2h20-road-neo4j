@@ -13,6 +13,15 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
+    def update_work_by_id(self,id_work,title,address,date,type):
+        with self.driver.session() as session:
+            return session.write_transaction(self.update_work_by_id_bd,id_work,title,address,date,type)
+
+    @staticmethod
+    def update_work_by_id_bd(tx, id_work,title,address,date,type):
+        tx.run("MATCH (w:Work) where ID(w) = $id SET w.title=$title, w.address = $address, w.date = $date, "
+               "w.type = $type", id=id_work,title = title,address = address,date=date,type=type)
+
     def delete_work_by_id(self,id_work):
         with self.driver.session() as session:
             return session.write_transaction(self.delete_work_by_id_bd,id_work)
