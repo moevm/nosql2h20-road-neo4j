@@ -11,8 +11,15 @@ class PageThirten(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
+        def onFullListsButtonsClick(title,index):
+            controller.frames["PageEleven"].update_filters()
+            controller.frames["PageEleven"].change_list("","","")
+            controller.frames["PageEleven"].index = index
+            controller.frames["PageEleven"].titleFrameLabel['text'] = title
+            controller.show_frame("PageEleven")
+
         tk.Button(self, text="Редактировать дорожную работу",command=lambda: controller.show_frame("PageSeventeen")).place(x=320, y=150)
         tk.Button(self, text="Добавить дорожную работу",command=lambda: controller.show_frame("PageSixteen")).place(x=320, y=200)
-        tk.Button(self, text="Удалить дорожную работу",command=lambda: controller.show_frame("PageFifteen")).place(x=320, y=250)
+        tk.Button(self, text="Удалить дорожную работу",command=lambda: onFullListsButtonsClick("Общий список",15)).place(x=320, y=250)
         tk.Button(self, text="Статистика").place(x=320, y=300)
         tk.Button(self, text="Выйти",command=lambda: controller.show_frame("PageTwelve")).place(x=320, y=400)

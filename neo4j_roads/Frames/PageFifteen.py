@@ -1,3 +1,4 @@
+from main import example
 try:
     import tkinter as tk                # python 3
     from tkinter import font as tkfont  # python 3
@@ -23,5 +24,20 @@ class PageFifteen(tk.Frame):
         self.dateLabel.place(x=100, y=200)
         self.typeLabel.place(x=100, y=250)
 
-        tk.Button(self, text=" Удалить").place(x=100, y=400)
-        tk.Button(self, text="Назад",command=lambda: controller.show_frame("PageThirten")).place(x=20, y=50)
+        def delete_work():
+            example.delete_work_by_id(int(self.id_work))
+
+        def back():
+            controller.frames["PageEleven"].change_list("","","")
+            controller.show_frame("PageEleven")
+
+        tk.Button(self, text=" Удалить",command=lambda: delete_work()).place(x=100, y=400)
+        tk.Button(self, text="Назад",command=lambda: back()).place(x=20, y=50)
+
+    def show_details(self,id):
+        details = example.get_work_details(id).split("|")
+        self.id_work = id
+        self.titleLabel['text'] = "Название:"+details[1]
+        self.addressLabel['text'] = "Адрес:"+details[2]
+        self.dateLabel['text'] = "Дата:"+details[3]
+        self.typeLabel['text'] = "Вид:"+details[4]

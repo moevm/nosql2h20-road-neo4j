@@ -13,6 +13,15 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
+    def delete_work_by_id(self,id_work):
+        with self.driver.session() as session:
+            return session.write_transaction(self.delete_work_by_id_bd,id_work)
+
+    @staticmethod
+    def delete_work_by_id_bd(tx, id_work):
+        tx.run("MATCH (w:Work)<-[r:HAS]-(n) where ID(w) = $id DELETE r", id=id_work)
+        tx.run("MATCH (n:Work) WHERE ID(n) = $id DELETE n", id=id_work)
+
     def get_works_by_filter(self,date,type,address):
         with self.driver.session() as session:
             return session.read_transaction(self.get_works_by_filter_bd,date,type,address)

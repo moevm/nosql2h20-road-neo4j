@@ -13,10 +13,15 @@ class PageEleven(tk.Frame):
         self.controller = controller
 
 
+        def back():
+            if self.index == 0:
+                controller.show_frame("PageTwo")
+            elif self.index == 15: controller.show_frame("PageThirten")
+
         self.titleFrameLabel = tk.Label(self, text="Gorod", font=controller.title_font)
         self.titleFrameLabel.place(x=70, y=50)
         tk.Button(self, text="Назад",
-                  command=lambda: controller.show_frame("PageTwo")).place(x=20, y=50)
+                  command=lambda: back()).place(x=20, y=50)
 
         def callback(*args):
             date = self.variable1.get() if self.variable1.get() != "Не выбрано" else ""
@@ -50,6 +55,8 @@ class PageEleven(tk.Frame):
         self.w3.config(width=10,justify=tk.LEFT,wraplength=100)
         self.w3.place(x=640, y=100)
 
+        self.index = 0
+
         tk.Label(self, text="Фильтр",font=controller.title_font).place(x=620, y=50)
 
         frameList = tk.Frame(self)
@@ -64,9 +71,13 @@ class PageEleven(tk.Frame):
             index = int(w.curselection()[0])
             value = str(w.get(index))
             id_work = int(value.split(' ', 2)[1])
-            controller.frames['PageFour'].show_details(id_work)
-            controller.frames['PageFour'].index = 11
-            controller.show_frame("PageFour")
+            if(self.index == 0):
+                controller.frames['PageFour'].show_details(id_work)
+                controller.frames['PageFour'].index = 11
+                controller.show_frame("PageFour")
+            elif self.index == 15:
+                controller.frames['PageFifteen'].show_details(id_work)
+                controller.show_frame('PageFifteen')
             print('You selected item %d: "%s"' % (index, value))
 
         self.mylist = tk.Listbox(frameList, yscrollcommand=scrollbar.set)
