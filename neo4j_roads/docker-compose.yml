@@ -1,4 +1,4 @@
-version: '2'
+version: '3'
 services:
   web:
     build: .
@@ -7,7 +7,23 @@ services:
     volumes:
      - .:/code
     depends_on:
-     - redis
-  redis:
-    image: redis
+     - neo4j
+
+  neo4j:
+    image: neo4j:latest
+    expose:
+      - 7687
+      - 7474
+    volumes:
+      - ./conf:/conf
+      - ./data:/data
+      - ./import:/import
+      - ./logs:/logs
+      - ./plugins:/plugins
+    environment:
+      - NEO4J_AUTH=none
+      - NEO4J_dbms_connector_bolt_advertised__address=localhost
+      - NEO4J_dbms_connector_http_advertised__address=localhost
+      - NEO4J_dbms_connector_https_advertised__address=localhost
+      - NEO4JLABS_PLUGINS=["apoc"]
  

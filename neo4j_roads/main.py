@@ -1,4 +1,5 @@
 from neo4j import GraphDatabase
+import time
 
 class Neo4jConnection:
 
@@ -221,6 +222,12 @@ class Neo4jConnection:
                         message=message)
         return result.single()[0]
 
-example = Neo4jConnection("bolt://0.0.0.0:7687", "debrone", "12345")
+
+while True:
+            try:
+                example = Neo4jConnection("bolt://127.0.0.1:7687", "debrone", "12345")
+                break
+            except:  # Wait till neo4j gets available to connect to
+                time.sleep(0.1)
 #example.get_cities()
 #example.close()
