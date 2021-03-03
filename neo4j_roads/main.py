@@ -1,4 +1,5 @@
 from neo4j import GraphDatabase
+import json
 import time
 
 class Neo4jConnection:
@@ -14,17 +15,17 @@ class Neo4jConnection:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
 
-    def import_database(self):
-        with self.driver.session() as session:
-            return session.read_transaction(self.import_database_bd)
+    # def import_database(self):
+    #     with self.driver.session() as session:
+    #         return session.read_transaction(self.import_database_bd)
 
     @staticmethod
     def import_database_bd(tx):
         tx.run("CALL apoc.load.csv('works.csv')")
 
-    def export_database(self):
-        with self.driver.session() as session:
-            return session.read_transaction(self.import_database_bd)
+    # def export_database(self):
+    #     with self.driver.session() as session:
+    #         return session.read_transaction(self.import_database_bd)
 
     @staticmethod
     def export_database_bd(tx):
@@ -213,19 +214,57 @@ class Neo4jConnection:
             works.append(str(node['n'].id) + "|" + node['n'].get('title') + "|" + node['n'].get('address'))
         return works
 
+    @staticmethod
+    def _delete_nodes(tx):
+        req = '''MATCH (n) DETACH DELETE n'''
+        result = tx.run(req)
+        return result
+
+    def create_node(self, city, address, date, title, type):
+        with self.driver.session() as session:
+            session.write_transaction(self._create_node, city, address, date, title, type)
 
     @staticmethod
-    def create_node(tx, message):
-        result = tx.run("CREATE (a:Greeting) "
-                        "SET a.message = $message "
-                        "RETURN '\"' + a.message + '\"' + ' added with node id ' + id(a)",
-                        message=message)
-        return result.single()[0]
+    def _create_node(tx, city, address, date, title, type):
+        req = '''MERGE (a:City {title: $city})
+                 CREATE (b:Work {address: $address, date: $date, title: $title, type: $type})
+                 CREATE (a)-[:HAS]->(b)
+        '''
+        return tx.run(req, city=city, address=address, date=date, title=title, type=type)
+
+    @staticmethod
+    def _export(tx):
+        req = '''MATCH (a:City)-[:HAS]->(b:Work)
+                 RETURN a.title as city, b.address, b.date, b.title, b.type
+        '''
+        result = tx.run(req)
+
+        return [{'city': r[0], 'address': r[1], 'date': r[2], 'title': r[3], 'type': r[4]} for r in result.values()]
+
+    def import_database(self):
+            self.delete_nodes()
+            with open('export') as json_file:
+                data = json.load(json_file)
+                for d in data:
+                    self.create_node(city=d['city'], address=d['address'], date=d['date'], title=d['title'], type=d['type'])
+
+    def export_database(self,):
+        with open("export", 'w') as json_file:
+            json.dump(self.getRecords(), json_file)
+
+    def getRecords(self):
+        with self.driver.session() as session:
+            result = session.write_transaction(self._export)
+        return result
+
+    def delete_nodes(self):
+        with self.driver.session() as session:
+            session.write_transaction(self._delete_nodes)
 
 
 while True:
             try:
-                example = Neo4jConnection("bolt://127.0.0.1:7687", "debrone", "12345")
+                example = Neo4jConnection("bolt://127.0.0.1:7687", "neo4j", "password")
                 break
             except:  # Wait till neo4j gets available to connect to
                 time.sleep(0.1)
