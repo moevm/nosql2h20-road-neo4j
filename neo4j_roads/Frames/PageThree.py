@@ -6,6 +6,8 @@ except ImportError:
     import Tkinter as tk     # python 2
     import tkFont as tkfont  # python 2
 
+
+
 class PageThree(tk.Frame):
 
 
@@ -24,13 +26,14 @@ class PageThree(tk.Frame):
         tk.Button(self, text="Назад",
                   command=lambda: onBackButtonsClick(1)).place(x=20, y=50)
 
+  
         frameList = tk.Frame(self)
         frameList.place(x=0, y=50)
         frameList.pack(expand=1, fill="x")
-
         scrollbar = tk.Scrollbar(frameList)
         scrollbar.pack(side="right", fill="y")
 
+    
 
 
         def onSelectCity(evt):

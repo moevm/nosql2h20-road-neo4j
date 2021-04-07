@@ -13,10 +13,7 @@ class Neo4jConnection:
         with self.driver.session() as session:
             msg = session.write_transaction(self.create_node, message)
             print(msg)
-
-    def import_database(self):
-        with self.driver.session() as session:
-            return session.read_transaction(self.import_database_bd)
+            
 
     @staticmethod
     def import_database_bd(tx):
@@ -79,6 +76,15 @@ class Neo4jConnection:
     def get_works_by_filter(self,date,type,address):
         with self.driver.session() as session:
             return session.read_transaction(self.get_works_by_filter_bd,date,type,address)
+
+    
+    def import_database(self, data):
+        print(data)
+        for d in data:
+            #title,address,date,type,city
+            # create_work(d['title'], d['address'], d['date'], d['type'], d['city'])
+            with self.driver.session() as session:
+                session.write_transaction(self.create_work_bd,d['title'], d['address'], d['date'], d['type'], d['city'])
 
     @staticmethod
     def get_works_by_filter_bd(tx, date, type, address):

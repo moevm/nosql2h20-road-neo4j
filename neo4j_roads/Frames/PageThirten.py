@@ -6,6 +6,10 @@ try:
 except ImportError:
     import Tkinter as tk     # python 2
     import tkFont as tkfont  # python 2
+from tkinter import filedialog
+
+import json
+
 
 class PageThirten(tk.Frame):
 
@@ -29,12 +33,17 @@ class PageThirten(tk.Frame):
             controller.show_frame("PageFouth")
 
         def importButtonClick():
-            example.import_database()
+            filename = filedialog.askopenfilename()
             tk.messagebox.showinfo("Инфо", "Импортировано!")
+            with open(filename) as json_file:
+                data = json.load(json_file)
+            example.import_database(data)
+
 
         def exportButtonClick():
             example.export_database()
             tk.messagebox.showinfo("Инфо", "Экспортировано!")
+ 
 
         tk.Button(self, text="Импорт",command=lambda: importButtonClick()).place(x=100, y=50)
         tk.Button(self, text="Экспорт",command=lambda: exportButtonClick()).place(x=150, y=50)
